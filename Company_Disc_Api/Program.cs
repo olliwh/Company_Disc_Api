@@ -45,6 +45,27 @@ app.UseCors(allowAll);
 
 app.Use(async (context, next) =>
 {
+    // Skip API key check for Swagger endpoints
+    if (context.Request.Path.StartsWithSegments("/swagger"))
+    {
+        await next();
+        return;
+    }
+
+    // Skip preflight OPTIONS requests (important for CORS!)
+    if (context.Request.Method == "OPTIONS")
+    {
+        await next();
+        return;
+    }
+
+    // Skip in development (optional)
+    if (app.Environment.IsDevelopment())
+    {
+        await next();
+        return;
+    }
+
     if (!context.Request.Headers.TryGetValue("X-API-Key", out var apiKey) ||
         apiKey != builder.Configuration["ApiKey"])
     {
