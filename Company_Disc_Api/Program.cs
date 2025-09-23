@@ -65,10 +65,18 @@ app.Use(async (context, next) =>
         await next();
         return;
     }
-    // Read API key from file
-    var expectedApiKey = File.ReadAllText("apikey.txt").Trim();
 
-    // Get API key from request headers (different variable name)
+    // Read API key from environment variable instead of file
+    var expectedApiKey = Environment.GetEnvironmentVariable("API_KEY");
+
+    if (string.IsNullOrEmpty(expectedApiKey))
+    {
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Server configuration error");
+        return;
+    }
+
+    // Get API key from request headers
     if (!context.Request.Headers.TryGetValue("X-API-Key", out var requestApiKey) ||
         requestApiKey != expectedApiKey)
     {
@@ -76,6 +84,7 @@ app.Use(async (context, next) =>
         await context.Response.WriteAsync("Unauthorized - Invalid API Key");
         return;
     }
+
     await next();
 });
 
