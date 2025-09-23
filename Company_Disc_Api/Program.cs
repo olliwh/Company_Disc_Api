@@ -65,9 +65,12 @@ app.Use(async (context, next) =>
         await next();
         return;
     }
+    // Read API key from file
+    var expectedApiKey = File.ReadAllText("apikey.txt").Trim();
 
-    if (!context.Request.Headers.TryGetValue("X-API-Key", out var apiKey) ||
-        apiKey != builder.Configuration["ApiKey"])
+    // Get API key from request headers (different variable name)
+    if (!context.Request.Headers.TryGetValue("X-API-Key", out var requestApiKey) ||
+        requestApiKey != expectedApiKey)
     {
         context.Response.StatusCode = 401;
         await context.Response.WriteAsync("Unauthorized - Invalid API Key");
