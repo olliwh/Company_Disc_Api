@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 });
 
 // Add services to the container.
-
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -55,8 +55,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ApiKeyMiddleware>();
 
-
+app.UseAuthorization();
 app.MapControllers();
+
+
 
 app.Run();
 
