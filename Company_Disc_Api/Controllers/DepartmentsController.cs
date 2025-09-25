@@ -22,14 +22,32 @@ namespace Company_Disc_Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<IEnumerable<Department>> Get()
         {
-            int a = _repository.GetAll().Count;
             List<Department> listOfDepartments = _repository.GetAll();
             if (listOfDepartments.Count < 1)
             {
                 return NoContent();
             }
+            //Thread.Sleep(2000);
+
             return Ok(listOfDepartments);
         }
+
+        //// GET: api/<MembersController>
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //public ActionResult<IEnumerable<Department>> Get()
+        //{
+        //    int a = _repository.GetAll().Count;
+        //    List<Department> listOfDepartments = _repository.GetAll();
+        //    if (listOfDepartments.Count < 1)
+        //    {
+        //        return NoContent();
+        //    }
+        //    //Thread.Sleep(2000);
+
+        //    return Ok(listOfDepartments);
+        //}
 
         // GET api/<MembersController>/5
         [HttpGet("{id}")]

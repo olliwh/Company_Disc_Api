@@ -25,8 +25,12 @@ namespace Company_Disc_Api.Repositories
                 new Employee(_nextId++, "Venus Williams", "J@m.dk", _departmentsRepository.GetById(2), _discTypesRepository.GetById(4),   "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Williams_V._RG21_%2811%29_%2851376275968%29_%28cropped%29.jpg/330px-Williams_V._RG21_%2811%29_%2851376275968%29_%28cropped%29.jpg"),
                 new Employee(_nextId++, "Daniel Agger", "d@m.dk", _departmentsRepository.GetById(2), _discTypesRepository.GetById(3), "https://upload.wikimedia.org/wikipedia/commons/e/e6/Daniel_Agger_20120613.jpg"),
                 new Employee(_nextId++, "Nadia Nadim", "N@m.dk", _departmentsRepository.GetById(3), _discTypesRepository.GetById(3), "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Nadia_Nadim_20170803_WEURO_DEN_AUT_1716_%28cropped%29.jpg/500px-Nadia_Nadim_20170803_WEURO_DEN_AUT_1716_%28cropped%29.jpg"),
-                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(3), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
-                new Employee(_nextId++, "Lionel Messi", "L@m.dk", _departmentsRepository.GetById(3), _discTypesRepository.GetById(2), "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lionel_Messi_20180626.jpg/500px-Lionel_Messi_20180626.jpg")
+                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(4), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
+                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(4), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
+                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(5), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
+                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(6), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
+                new Employee(_nextId++, "Bob Dylan", "B@m.dk", _departmentsRepository.GetById(7), _discTypesRepository.GetById(2),  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg/500px-DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg"),
+                new Employee(_nextId++, "Lionel Messi", "L@m.dk", _departmentsRepository.GetById(7), _discTypesRepository.GetById(2), "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lionel_Messi_20180626.jpg/500px-Lionel_Messi_20180626.jpg")
             };
         }
         public Employee? GetById(int id)
@@ -60,10 +64,13 @@ namespace Company_Disc_Api.Repositories
             employeeToUpdate.ImgUrl = employee.ImgUrl;
             return employeeToUpdate;
         }
-        public List<Employee> GetAll(int? amount = null, string? namefilter = null, int? minLevel = null)
+        public List<Employee> GetAll(int? departmentFilter)
         {
             List<Employee> result = new List<Employee>(_employees);
-
+            if (departmentFilter != null)
+            {
+                result = result.FindAll(employee => employee.Department.Id == departmentFilter);
+            }
             return result;
         }
     }

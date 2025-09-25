@@ -25,6 +25,8 @@ namespace Company_Disc_Api.Controllers
             {
                 return NoContent();
             }
+            //Thread.Sleep(2000);
+
             return Ok(listOfDiscTypes);
         }
 

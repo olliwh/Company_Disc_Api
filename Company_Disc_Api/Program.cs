@@ -1,4 +1,5 @@
 using Company_Disc_Api.Repositories;
+using Company_Disc_Api.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 string allowAll = "AllowAll";
@@ -43,50 +44,7 @@ var app = builder.Build();
 app.UseCors(allowAll);
 
 
-app.Use(async (context, next) =>
-{
-    // Skip API key check for Swagger endpoints
-    if (context.Request.Path.StartsWithSegments("/swagger"))
-    {
-        await next();
-        return;
-    }
 
-    // Skip preflight OPTIONS requests (important for CORS!)
-    if (context.Request.Method == "OPTIONS")
-    {
-        await next();
-        return;
-    }
-
-    // Skip in development (optional)
-    if (app.Environment.IsDevelopment())
-    {
-        await next();
-        return;
-    }
-
-    // Read API key from environment variable instead of file
-    var expectedApiKey = Environment.GetEnvironmentVariable("API_KEY");
-
-    if (string.IsNullOrEmpty(expectedApiKey))
-    {
-        context.Response.StatusCode = 500;
-        await context.Response.WriteAsync("Server configuration error");
-        return;
-    }
-
-    // Get API key from request headers
-    if (!context.Request.Headers.TryGetValue("X-API-Key", out var requestApiKey) ||
-        requestApiKey != expectedApiKey)
-    {
-        context.Response.StatusCode = 401;
-        await context.Response.WriteAsync("Unauthorized - Invalid API Key");
-        return;
-    }
-
-    await next();
-});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,7 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 
 app.MapControllers();

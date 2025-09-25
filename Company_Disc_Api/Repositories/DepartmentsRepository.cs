@@ -17,6 +17,9 @@ namespace Company_Disc_Api.Repositories
                 new Department(_nextId++, "IT"),
                 new Department(_nextId++, "Customer Service"),
                 new Department(_nextId++, "Support"),
+                new Department(_nextId++, "Reception"),
+                new Department(_nextId++, "Finance"),
+                new Department(_nextId++, "Marketing"),
             };
         }
         public Department? GetById(int id)

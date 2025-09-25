@@ -16,17 +16,19 @@ namespace Company_Disc_Api.Controllers
         }
 
         // GET: api/<MembersController>
+        //https://localhost:7051/api/employees?departmentfilter=2
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult<IEnumerable<Employee>> Get()
+        public ActionResult<IEnumerable<Employee>> Get(
+            [FromQuery] int? departments)
         {
-            int a = _repository.GetAll().Count;
-            List<Employee> listOfEmployees = _repository.GetAll();
+            List<Employee> listOfEmployees = _repository.GetAll(departments);
             if (listOfEmployees.Count < 1)
             {
                 return NoContent();
             }
+            //Thread.Sleep(2000);
             return Ok(listOfEmployees);
         }
 
@@ -52,7 +54,6 @@ namespace Company_Disc_Api.Controllers
             try
             {
                 Employee createdEmployee = _repository.Add(newEmployee);
-                int a = _repository.GetAll().Count;
                 return Created($"api/Employee/{createdEmployee.Id}", createdEmployee);
             }
             catch (Exception ex) when (ex is ArgumentNullException ||
