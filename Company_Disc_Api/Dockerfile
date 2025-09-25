@@ -20,7 +20,9 @@ WORKDIR /app
 COPY --from=build /app .
 
 # Configure for Render's dynamic port
-ENV ASPNETCORE_URLS=http://0.0.0.0:$PORT
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-ENTRYPOINT ["dotnet", "Company_Disc_Api.dll"]
+# Create startup script
+RUN echo '#!/bin/bash\necho "PORT is: $PORT"\nexport ASPNETCORE_URLS="http://0.0.0.0:$PORT"\necho "ASPNETCORE_URLS is: $ASPNETCORE_URLS"\nexec dotnet Company_Disc_Api.dll' > /app/start.sh && chmod +x /app/start.sh
+
+ENTRYPOINT ["/app/start.sh"]
